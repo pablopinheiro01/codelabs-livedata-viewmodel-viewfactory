@@ -59,15 +59,18 @@ class ScoreFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(ScoreViewModel::class.java)
 
+        //inicializa a variavel do layout
+        binding.scoreViewModel = viewModel
+
         //Observando o Score alterado atravres do MutableLiveData
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             binding.scoreText.text = newScore.toString()
         })
 
-        //escuto o onclick no caso do cliente desejar jogar novamente
-        binding.playAgainButton.setOnClickListener {
-            viewModel.onPlayAgain()
-        }
+        //escuto o onclick no caso do cliente desejar jogar novamente, porem foi comentado devido o uso direto no layout do fragment
+//        binding.playAgainButton.setOnClickListener {
+//            viewModel.onPlayAgain()
+//        }
 
         // utilizo as directions para redirecioanr o cliente
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->

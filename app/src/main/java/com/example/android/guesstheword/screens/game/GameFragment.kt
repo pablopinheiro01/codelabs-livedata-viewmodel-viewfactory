@@ -58,6 +58,9 @@ class GameFragment : Fragment() {
         Log.i("GameFragment","Chamando ViewModel")
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
+        //variavel definida no xml do game_fragment.xml
+        binding.gameViewModel = viewModel
+
         //atualiza o score atraves de um observer
         //este metodo substitui as functions updateScoreText() e updateWordText()
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
@@ -73,14 +76,15 @@ class GameFragment : Fragment() {
             if(hasFinished) gameFinished()
         })
 
-        binding.correctButton.setOnClickListener { onCorrect() }
-        binding.skipButton.setOnClickListener { onSkip() }
+        //binding dos Listeners de Click foram substituidos no XML
+//        binding.correctButton.setOnClickListener { onCorrect() }
+//        binding.skipButton.setOnClickListener { onSkip() }
 //        updateScoreText()
 //        updateWordText()
+//        binding.endGameButton.setOnClickListener {
+//            onEndGame()
+//        }
 
-        binding.endGameButton.setOnClickListener {
-            onEndGame()
-        }
         return binding.root
     }
 
