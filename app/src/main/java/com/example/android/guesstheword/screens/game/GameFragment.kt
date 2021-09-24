@@ -61,15 +61,20 @@ class GameFragment : Fragment() {
         //variavel definida no xml do game_fragment.xml
         binding.gameViewModel = viewModel
 
+        //definindo a view como dono do ciclo de vida
+        //esta alteração permite que o escopo do LiveData permitindo que o objeto atualize automaticamente no layout
+        binding.lifecycleOwner = viewLifecycleOwner
+
         //atualiza o score atraves de um observer
         //este metodo substitui as functions updateScoreText() e updateWordText()
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             binding.scoreText.text = newScore.toString()
         })
 
-        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
-            binding.wordText.text = newWord
-        })
+        //removido o Observer devido a definição acima do lifeCycleOwner e a vinculação direta no layout.xml
+//        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
+//            binding.wordText.text = newWord
+//        })
 
         //observer para o game se for encerrado por falta de palavras
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> { hasFinished ->
