@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
 
@@ -38,6 +39,10 @@ class GameFragment : Fragment() {
     private lateinit var viewModel: GameViewModel
 
     private lateinit var binding: GameFragmentBinding
+
+    private val controller by lazy {
+        findNavController()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -110,6 +115,6 @@ class GameFragment : Fragment() {
         viewModel.onGameFinishComplete() //finalizando o game alterando o boolean que estava sendo observado para redirecionar
         val action = GameFragmentDirections.actionGameToScore()
         action.score = viewModel.score.value?:0
-        NavHostFragment.findNavController(this).navigate(action)
+        controller.navigate(action)
     }
 }

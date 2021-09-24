@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.ScoreFragmentBinding
@@ -35,6 +36,10 @@ class ScoreFragment : Fragment() {
 
     private lateinit var viewModel: ScoreViewModel
     private lateinit var viewModelFactory: ScoreViewModelFactory
+
+    private val controller by lazy {
+        this.findNavController()
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -57,6 +62,19 @@ class ScoreFragment : Fragment() {
         //Observando o Score alterado atravres do MutableLiveData
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             binding.scoreText.text = newScore.toString()
+        })
+
+        //escuto o onclick no caso do cliente desejar jogar novamente
+        binding.playAgainButton.setOnClickListener {
+            viewModel.onPlayAgain()
+        }
+
+        // utilizo as directions para redirecioanr o cliente
+        viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->
+            if(playAgain){
+                controller.navigate(ScoreFragmentDirections.actionRestart())
+                viewModel.onPlayAgainComplete()
+            }
         })
 
         return binding.root
