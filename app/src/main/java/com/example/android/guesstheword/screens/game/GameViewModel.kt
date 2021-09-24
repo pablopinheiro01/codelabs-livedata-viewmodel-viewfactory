@@ -97,8 +97,14 @@ class GameViewModel: ViewModel() {
         }
     }
 
+    //finaliza o jogo apos exibir todas as palavras da lista
     fun onGameFinish(){
         _eventGameFinish.value = true
+    }
+
+    //apos completar o jogo removemos o valor de true setando false
+    fun onGameFinishComplete(){
+        _eventGameFinish.value = false
     }
 
 }
