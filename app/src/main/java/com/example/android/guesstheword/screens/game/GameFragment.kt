@@ -71,38 +71,14 @@ class GameFragment : Fragment() {
             binding.scoreText.text = newScore.toString()
         })
 
-        //removido o Observer devido a definição acima do lifeCycleOwner e a vinculação direta no layout.xml
-//        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
-//            binding.wordText.text = newWord
-//        })
 
         //observer para o game se for encerrado por falta de palavras
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> { hasFinished ->
             if(hasFinished) gameFinished()
         })
 
-        //binding dos Listeners de Click foram substituidos no XML
-//        binding.correctButton.setOnClickListener { onCorrect() }
-//        binding.skipButton.setOnClickListener { onSkip() }
-//        updateScoreText()
-//        updateWordText()
-//        binding.endGameButton.setOnClickListener {
-//            onEndGame()
-//        }
 
         return binding.root
-    }
-
-    fun onSkip() {
-        viewModel.onSkip()
-        updateWordText()
-        updateScoreText()
-    }
-
-    fun onCorrect() {
-        viewModel.onCorrect()
-        updateScoreText()
-        updateWordText()
     }
 
     /** Methods for updating the UI **/
@@ -115,9 +91,6 @@ class GameFragment : Fragment() {
         binding.scoreText.text = viewModel.score.value.toString()
     }
 
-    private fun onEndGame(){
-        gameFinished()
-    }
 
     private fun gameFinished(){
         Toast.makeText(activity, "Game has just finished", Toast.LENGTH_LONG).show()
