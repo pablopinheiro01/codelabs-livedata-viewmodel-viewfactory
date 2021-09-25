@@ -65,30 +65,12 @@ class GameFragment : Fragment() {
         //esta alteração permite que o escopo do LiveData permitindo que o objeto atualize automaticamente no layout
         binding.lifecycleOwner = viewLifecycleOwner
 
-        //atualiza o score atraves de um observer
-        //este metodo substitui as functions updateScoreText() e updateWordText()
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
-            binding.scoreText.text = newScore.toString()
-        })
-
-
         //observer para o game se for encerrado por falta de palavras
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> { hasFinished ->
             if(hasFinished) gameFinished()
         })
 
-
         return binding.root
-    }
-
-    /** Methods for updating the UI **/
-
-    private fun updateWordText() {
-        binding.wordText.text = viewModel.word.value
-    }
-
-    private fun updateScoreText() {
-        binding.scoreText.text = viewModel.score.value.toString()
     }
 
 
