@@ -68,6 +68,22 @@
             tools:text="&quot;Tuna&quot;" />
 
         <TextView
+            android:id="@+id/word_hint_secret"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/grey_text_color"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:text="@{gameViewModel.wordHint}"
+            app:layout_constraintBottom_toTopOf="@id/timer_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="PALAVRA E"
+            />
+
+        <TextView
             android:id="@+id/timer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,6 +94,7 @@
             android:textColor="@color/grey_text_color"
             android:textSize="14sp"
             android:textStyle="normal"
+            android:text="@{gameViewModel.currentTimeString}"
             app:layout_constraintBottom_toTopOf="@+id/score_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,9 +1,11 @@
 package com.example.android.guesstheword.screens.game
 
 import android.os.CountDownTimer
+import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class GameViewModel: ViewModel() {
@@ -33,6 +35,17 @@ class GameViewModel: ViewModel() {
     get() = _currentTime
 
     private val timer: CountDownTimer
+
+    //versao do currentTime em String para exibicao na tela
+    //apenas vinculando essa variavel na tela o LiveData definido em currentTime vincula automaticamente essa propriedade ao layout
+    val currentTimeString = Transformations.map(currentTime) { time ->
+        DateUtils.formatElapsedTime(time)
+    }
+
+    val wordHint = Transformations.map(word) { word ->
+        val randomPosition = (1..word.length).random()
+        "PALAVRA DO MOMENTO TEM "+word.length+" LETRAS "+ " \n A letra na posicao "+ randomPosition + " É " + word.get(randomPosition -1 ).toUpperCase()
+    }
 
 
     init {
