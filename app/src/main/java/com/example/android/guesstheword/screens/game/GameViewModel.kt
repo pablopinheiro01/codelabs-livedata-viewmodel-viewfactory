@@ -1,5 +1,6 @@
 package com.example.android.guesstheword.screens.game
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +27,13 @@ class GameViewModel: ViewModel() {
     val eventGameFinish: LiveData<Boolean>
     get()  = _eventGameFinish
 
+    //variavel Mutable para controle do tempo
+    private val _currentTime = MutableLiveData<Long>()
+    val currentTime: LiveData<Long>
+    get() = _currentTime
+
+    private val timer: CountDownTimer
+
 
     init {
         Log.i("GameViewModel","GameViewModel Created!")
@@ -34,11 +42,26 @@ class GameViewModel: ViewModel() {
         resetList()
         nextWord()
 
+        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND){
+            override fun onTick(millisUntilFinished: Long) {
+                //calculo cada passo do contador divido pelo segundo.
+                _currentTime.value = millisUntilFinished/ ONE_SECOND
+            }
+
+            override fun onFinish() {
+                _currentTime.value = DONE
+                onGameFinish()
+            }
+
+        }
+        timer.start()
+
     }
 
     override fun onCleared() {
         super.onCleared()
         Log.i("GameViewModel","GameViewModel destroyed!")
+        timer.cancel() //limpo o timer para evitar vazamento de memoria
     }
 
 
@@ -93,7 +116,9 @@ class GameViewModel: ViewModel() {
             //Select and remove a word from the list
             _word.value = wordList.removeAt(0)
         }else{
-            onGameFinish()
+            //metodo migrado para o contador de tempo
+//            onGameFinish()
+            resetList() //limpo a lista
         }
     }
 
@@ -105,6 +130,17 @@ class GameViewModel: ViewModel() {
     //apos completar o jogo removemos o valor de true setando false
     fun onGameFinishComplete(){
         _eventGameFinish.value = false
+    }
+
+    companion object {
+        //Time quando o jogo acaba
+        private const val DONE = 0L
+
+        //CountDown do intervalo de tempo
+        private const val ONE_SECOND = 1000L
+
+        //Tempo total para o jogo
+        private const val COUNTDOWN_TIME = 60000L
     }
 
 }
